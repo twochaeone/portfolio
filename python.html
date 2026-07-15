@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이채원 | Python Web Developer 포트폴리오</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #0b1329;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* 슬라이드 트랜지션 애니메이션 */
+        .slide-container {
+            perspective: 1200px;
+        }
+        .slide {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .slide-active {
+            opacity: 1;
+            transform: scale(1) translateZ(0);
+            pointer-events: auto;
+        }
+        .slide-inactive-left {
+            opacity: 0;
+            transform: scale(0.9) translateX(-100%) rotateY(15deg);
+            pointer-events: none;
+        }
+        .slide-inactive-right {
+            opacity: 0;
+            transform: scale(0.9) translateX(100%) rotateY(-15deg);
+            pointer-events: none;
+        }
+
+        /* 글래스모피즘 효과 */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* 커스텀 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        /* 기술 스택 뱃지 */
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0b1329',
+                            card: '#0f172a',
+                            accent: '#22d3ee', // Cyan
+                            emerald: '#34d399', // Emerald
+                            purple: '#a78bfa' // Purple
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-900">
+
+    <!-- 상단 상태/진행 바 및 네비게이션 -->
+    <header class="w-full px-6 py-4 flex justify-between items-center z-50 glass-card border-b border-white/5">
+        <div class="flex items-center space-x-3">
+            <span class="inline-block w-3.5 h-3.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span class="text-xs uppercase tracking-widest font-bold text-cyan-400">Python Web Developer Portfolio</span>
+            <span class="text-slate-500">|</span>
+            <span class="text-xs text-slate-300 font-medium hidden md:inline">이채원 (Lee Chae-won)</span>
+        </div>
+        
+        <!-- 슬라이드 미니 목록 드롭다운 -->
+        <div class="relative">
+            <button id="dropdown-btn" class="flex items-center space-x-2 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-white/10 transition-colors">
+                <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+                <span id="current-slide-badge">01 / 07</span>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </button>
+            <div id="slide-dropdown" class="absolute right-0 mt-2 w-72 bg-slate-900 border border-white/10 rounded-xl shadow-2xl hidden z-50 p-2 max-h-96 overflow-y-auto">
+                <!-- Dropdown items will be injected by JS -->
+            </div>
+        </div>
+    </header>
+
+    <!-- 슬라이드 영역 컨테이너 -->
+    <main class="flex-grow flex items-center justify-center relative w-full overflow-hidden px-4 md:px-8 py-4 slide-container">
+        
+        <!-- 슬라이드 1: 표지 + 보유 스킬 (통합) -->
+        <section id="slide-0" class="slide slide-active absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-start">
+                <div class="bg-cyan-500/10 text-cyan-400 text-xs font-semibold px-3 py-1.5 rounded-full border border-cyan-500/20">
+                    PORTFOLIO 2026
+                </div>
+                <div class="text-right text-slate-400 text-xs">
+                    <p>Python Web Developer</p>
+                </div>
+            </div>
+            
+            <div class="my-auto space-y-8">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-emerald-400 to-indigo-400">
+                        구조를 분석하고 이해하는 개발자
+                    </span>
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base font-light max-w-2xl -mt-4">
+                    문서 없는 시스템의 구조를 역공학으로 분석해 자동화한 경험과, 웹 서비스 설계·개발 경험을 함께 갖춘 Python 웹 개발자입니다.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                    <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <span class="text-xs text-cyan-400 font-bold block mb-2 uppercase tracking-wider">Python & Web</span>
+                        <p class="text-sm text-slate-200 leading-relaxed">Python 자동화 개발, HTML/CSS 구조 이해, REST API 설계 경험</p>
+                    </div>
+                    <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <span class="text-xs text-emerald-400 font-bold block mb-2 uppercase tracking-wider">Database</span>
+                        <p class="text-sm text-slate-200 leading-relaxed">MySQL, Oracle, 구조 역공학 분석, 정합성 검증, 쿼리 튜닝</p>
+                    </div>
+                    <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <span class="text-xs text-purple-400 font-bold block mb-2 uppercase tracking-wider">Web & Infra</span>
+                        <p class="text-sm text-slate-200 leading-relaxed">React 프론트엔드 연동, AWS 배포, Git 협업 경험</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center pt-6 border-t border-white/5 text-xs text-slate-500 gap-4">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <p class="text-slate-400 font-semibold text-sm">이채원</p>
+                        <p>Python Web Developer</p>
+                    </div>
+                </div>
+                <div class="flex space-x-6 text-slate-400">
+                    <span class="flex items-center"><i data-lucide="terminal" class="w-4 h-4 mr-1 text-cyan-400"></i> Python / Web</span>
+                    <span class="flex items-center"><i data-lucide="database" class="w-4 h-4 mr-1 text-emerald-400"></i> MySQL / DB Design</span>
+                    <span class="flex items-center"><i data-lucide="git-branch" class="w-4 h-4 mr-1 text-purple-400"></i> Structure Reverse-Engineering</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 슬라이드 2: Project 1 (ETL 자동화) -->
+        <section id="slide-2" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-cyan-400 rounded-full"></span>
+                    PROJECT 01. ETL 메타 DB 역공학 자동화 (MySQL)
+                </h2>
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Structure Reverse-Engineering</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-3">
+                <span class="tech-badge bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Python</span>
+                <span class="tech-badge bg-amber-500/10 text-amber-300 border border-amber-500/20">MySQL</span>
+                <span class="tech-badge bg-purple-500/10 text-purple-300 border border-purple-500/20">Structure Analysis</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center overflow-y-auto max-h-[420px] pr-2">
+                <div class="lg:col-span-6 space-y-4">
+                    <span class="bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-md border border-cyan-500/20 font-semibold">Metadata Automation</span>
+                    <h3 class="text-2xl font-extrabold text-slate-100">
+                        ETL 툴 메타 DB 역공학 분석을 통한<br>수천 개 이행 작업 자동화 생성
+                    </h3>
+                    <div class="text-slate-300 text-sm font-light space-y-2 leading-relaxed">
+                        <p>
+                            <span class="text-cyan-400 font-medium">상황:</span> 신규 매핑 정의서에 맞춰 수천 개의 데이터 전환 작업 생성 자동화 프로그램 필요
+                        </p>
+                        <p>
+                            <span class="text-emerald-400 font-medium">역공학(Reverse Engineering):</span> DB 스키마 구조 문서가 전혀 없는 폐쇄적 환경. UI로샘플 작업을 하나 등록한 직후, 시스템 테이블에서 변경 시각이 탐지된 물리 테이블들의 관계를 역추적.
+                        </p>
+                        <p>
+                            <span class="text-purple-400 font-medium">해결:</span> Python 스크립트로 <span class="text-slate-100 font-medium">MySQL 메타 저장소</span>에 직접 작업을 주입하는 파이프라인 완성. **수주일 짜리 반복 작업을 단 몇 분 만에 종료.**
+                        </p>
+                        <p>
+                            <span class="text-amber-400 font-medium">방법론:</span> 문서 없는 시스템의 구조를 UI 조작 → 내부 테이블 변화 관찰 → 관계 역추적 방식으로 밝혀낸 경험은, 명세 없는 웹사이트의 구조를 분석하고 자동화 대응 로직을 설계하는 작업과 접근 방식이 동일하다고 생각합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-4">
+                    <!-- 역공학 원리 쿼리 카드 -->
+                    <div class="bg-slate-900 rounded-xl p-4 border border-white/10 shadow-lg">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
+                            <span class="text-xs font-mono text-cyan-400">Analysis Method & Query</span>
+                            <span class="text-[10px] text-slate-500">Reverse Analysis</span>
+                        </div>
+                        <pre class="text-[11px] font-mono text-emerald-400 overflow-x-auto leading-tight">
+<span class="text-slate-500">-- 메타 정보가 수작업에 의해 변환된 순간의 테이블 역추적</span>
+<span class="text-purple-400">SELECT</span> table_schema, table_name, update_time
+<span class="text-purple-400">FROM</span> information_schema.tables
+<span class="text-purple-400">WHERE</span> table_schema = <span class="text-amber-300">'ETL_META_DB'</span>
+  <span class="text-purple-400">AND</span> update_time >= <span class="text-amber-300">'2025-12-30 14:00:00'</span>
+<span class="text-purple-400">ORDER BY</span> update_time <span class="text-purple-400">DESC</span>;</pre>
+                    </div>
+
+                    <!-- 흐름도 시각화 -->
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-slate-800/60 p-2.5 rounded-lg border border-white/5">
+                            <div class="text-slate-400 font-bold">1. UI 등록</div>
+                            <p class="text-[10px] text-slate-500 mt-1">테스트 잡 생성</p>
+                        </div>
+                        <div class="bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-500/20 text-cyan-300">
+                            <div class="font-bold">2. 스키마 역추적</div>
+                            <p class="text-[10px] text-cyan-400 mt-1">딕셔너리 감시</p>
+                        </div>
+                        <div class="bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-500/20 text-emerald-300">
+                            <div class="font-bold">3. 자동화 주입</div>
+                            <p class="text-[10px] text-emerald-400 mt-1">수천 개 작업 완료</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-slate-500 pt-4 border-t border-white/5">
+                <span>프로젝트 기여도: 100% (설계, 스키마 리버스 분석, 개발 독자 수행)</span>
+                <span>Python, MySQL, Metadata Mining</span>
+            </div>
+        </section>
+
+        <!-- 슬라이드 3: Project 2 (데이터 프로파일링) -->
+        <section id="slide-3" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full"></span>
+                    PROJECT 02. 동적 쿼리 자동 생성 & 검증 배치 파이프라인
+                </h2>
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Dynamic SQL Automation</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-3">
+                <span class="tech-badge bg-red-500/10 text-red-300 border border-red-500/20">Oracle</span>
+                <span class="tech-badge bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Python</span>
+                <span class="tech-badge bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Shell Script</span>
+                <span class="tech-badge bg-purple-500/10 text-purple-300 border border-purple-500/20">AIX</span>
+                <span class="tech-badge bg-amber-500/10 text-amber-300 border border-amber-500/20">SQL 튜닝</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center overflow-y-auto max-h-[420px] pr-2">
+                <div class="lg:col-span-5 space-y-4">
+                    <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20 font-semibold">SQL Generates SQL</span>
+                    <h3 class="text-2xl font-extrabold text-slate-100">
+                        수천 개 테이블 사전 검증을 위한<br>Bad Data 추출 쿼리 자동 생성 시스템
+                    </h3>
+                    <div class="text-slate-300 text-sm font-light space-y-2 leading-relaxed">
+                        <p>
+                            <span class="text-emerald-400 font-semibold">문제:</span> 본이행 전, AS-IS 스테이징 DB의 수천 개 테이블에 대해 매핑 정의서 기준 검증 규격에 어긋나는 Bad Data를 사람이 일일이 쿼리로 찾아낼 수 없는 규모.
+                        </p>
+                        <p>
+                            <span class="text-cyan-400 font-semibold">해결 - SQL을 만드는 SQL:</span> 매핑 정의서(자료형, 자릿수, Not Null, 코드값 등 검증 규격)를 기준으로 **각 테이블/컬럼별 Bad Data 추출 쿼리 자체를 생성하는 쿼리**를 설계, 수천 개 검증 쿼리를 자동으로 산출.
+                        </p>
+                        <p>
+                            <span class="text-purple-400 font-semibold">실행:</span> 생성된 쿼리를 Shell Script로 일괄 구동, 배치 프로그램화하여 수천 개 테이블을 정기적으로 검증.
+                        </p>
+                        <p>
+                            <span class="text-red-400 font-semibold">Python으로 전환:</span> 이후 검증 대상이 SQL*Plus의 LINESIZE 한계(32,767자)를 넘는 대용량 CLOB SQL로 확장되면서, 쿼리 생성·파일 출력 로직을 Shell에서 <span class="text-slate-200">Python 스크립트</span>로 직접 재작성해 대응. 이 과정에서 인코딩(UTF-8), 개행 문자, 경로 처리 등 실무 파일 자동화 노하우를 축적.
+                        </p>
+                        <p>
+                            <span class="text-amber-400 font-semibold">함수화:</span> 날짜 형식 검증처럼 반복되는 로직은 `IS_DATE()` 같은 PL/SQL 사용자 정의 함수로 만들어 검증 쿼리 전반에서 재사용.
+                        </p>
+                        <p>
+                            <span class="text-slate-400 font-semibold">확장 가능성:</span> 검증 규격을 기준으로 데이터 오류를 정기적으로 자동 탐지·기록하는 구조라, 데이터 정합성에 대한 내부통제(ITGC) 관점의 상시 모니터링 체계로도 적용할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="bg-slate-900 rounded-xl p-4 border border-white/10 shadow-lg">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
+                            <span class="text-xs font-mono text-emerald-400">Query-Generates-Query 흐름</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center text-[11px]">
+                            <div class="bg-slate-800/60 p-2.5 rounded-lg border border-white/5">
+                                <div class="text-slate-300 font-bold">1. 매핑 정의서</div>
+                                <p class="text-[10px] text-slate-500 mt-1">검증 규격 정의</p>
+                            </div>
+                            <div class="bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-500/20 text-cyan-300">
+                                <div class="font-bold">2. 쿼리 생성 SQL</div>
+                                <p class="text-[10px] text-cyan-400 mt-1">Bad Data 추출문 산출</p>
+                            </div>
+                            <div class="bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-500/20 text-emerald-300">
+                                <div class="font-bold">3. Shell 배치</div>
+                                <p class="text-[10px] text-emerald-400 mt-1">수천 개 일괄 실행</p>
+                            </div>
+                            <div class="bg-amber-950/40 p-2.5 rounded-lg border border-amber-500/20 text-amber-300">
+                                <div class="font-bold">4. IS_DATE() 등</div>
+                                <p class="text-[10px] text-amber-400 mt-1">공통 검증 함수화</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-5 rounded-xl border border-white/10 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-cyan-400"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-100 text-sm">본이행 리스크 사전 차단</h4>
+                                <p class="text-xs text-slate-400">본이행 후 발생하는 데이터 불일치의 정산 복구 비용을 사전 검증으로 제거</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-amber-400 font-bold bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/20 whitespace-nowrap">기획~개발 100% 전담</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-slate-500 pt-4 border-t border-white/5">
+                <span>프로젝트 기여도: 100% (검증 규칙 설계, 쿼리 자동 생성 로직, 배치화 총괄)</span>
+                <span>Oracle, PL/SQL, Shell Script, AIX</span>
+            </div>
+        </section>
+
+        <!-- 슬라이드: Project 03 (HTML 기반 엑셀 리포트 자동화) -->
+        <section id="slide-html-report" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span>
+                    PROJECT 03. HTML 기반 엑셀 리포트 자동 생성
+                </h2>
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Web Structure Automation</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-3">
+                <span class="tech-badge bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Python</span>
+                <span class="tech-badge bg-amber-500/10 text-amber-300 border border-amber-500/20">HTML / CSS</span>
+                <span class="tech-badge bg-purple-500/10 text-purple-300 border border-purple-500/20">파일 자동화</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center overflow-y-auto max-h-[420px] pr-2">
+                <div class="lg:col-span-6 space-y-4">
+                    <span class="bg-amber-500/10 text-amber-400 text-xs px-2.5 py-1 rounded-md border border-amber-500/20 font-semibold">HTML → Excel Pipeline</span>
+                    <h3 class="text-2xl font-extrabold text-slate-100 leading-tight">
+                        쿼리 튜닝/프로파일링 결과를<br>양식 그대로 엑셀 리포트로 자동 발행
+                    </h3>
+                    <div class="text-slate-300 text-sm font-light space-y-2 leading-relaxed">
+                        <p>
+                            <span class="text-amber-400 font-semibold">문제:</span> 프로파일링·튜닝 결과를 집계해 운영팀에 정기 공유해야 했지만, 매번 수작업으로 엑셀 서식을 맞춰 정리하기엔 비효율적인 반복 업무.
+                        </p>
+                        <p>
+                            <span class="text-cyan-400 font-semibold">해결:</span> Python으로 쿼리 결과를 집계한 뒤, 정해진 엑셀 양식 그대로 <span class="text-slate-100">HTML 테이블을 동적 생성</span>하고 확장자를 변환해 엑셀에서 바로 열리는 리포트 파일로 자동 발행.
+                        </p>
+                        <p>
+                            <span class="text-red-400 font-semibold">트러블슈팅:</span> 처음엔 CSS class 기반으로 스타일링했으나 엑셀이 클래스 스타일을 제대로 렌더링하지 못해 서식이 깨짐 → 스타일 상수를 정의해 <code class="text-red-300">style=""</code> 인라인 속성으로 전면 전환해 해결.
+                        </p>
+                        <p>
+                            <span class="text-slate-400 font-semibold">파일 자동화 규칙:</span> UTF-8 인코딩, 개행 문자(<code class="text-slate-300">\\n</code>) 통일, 파일 끝 개행 등 사내 자동화 파일 출력 컨벤션을 직접 정립해 재사용.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-4">
+                    <div class="bg-slate-900 rounded-xl p-4 border border-white/10 shadow-lg">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2 mb-3">
+                            <span class="text-xs font-mono text-amber-400">Pipeline Flow</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center text-[11px]">
+                            <div class="bg-slate-800/60 p-2.5 rounded-lg border border-white/5">
+                                <div class="text-slate-300 font-bold">1. 쿼리 집계</div>
+                                <p class="text-[10px] text-slate-500 mt-1">결과 데이터 수집</p>
+                            </div>
+                            <div class="bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-500/20 text-cyan-300">
+                                <div class="font-bold">2. HTML 생성</div>
+                                <p class="text-[10px] text-cyan-400 mt-1">양식 맞춰 테이블 구성</p>
+                            </div>
+                            <div class="bg-red-950/40 p-2.5 rounded-lg border border-red-500/20 text-red-300">
+                                <div class="font-bold">3. 인라인 스타일</div>
+                                <p class="text-[10px] text-red-400 mt-1">엑셀 렌더링 호환</p>
+                            </div>
+                            <div class="bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-500/20 text-emerald-300">
+                                <div class="font-bold">4. 확장자 변환</div>
+                                <p class="text-[10px] text-emerald-400 mt-1">엑셀 파일로 발행</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-5 rounded-xl border border-white/10 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="file-code-2" class="w-8 h-8 text-amber-400"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-100 text-sm">웹 구조에 대한 실전 이해</h4>
+                                <p class="text-xs text-slate-400">HTML/CSS가 실제 애플리케이션(엑셀)에서 어떻게 파싱·렌더링되는지 직접 부딪히며 체득</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-slate-500 pt-4 border-t border-white/5">
+                <span>프로젝트 기여도: 100% (설계, HTML 렌더링 로직, 자동화 스크립트 개발)</span>
+                <span>Python, HTML/CSS, File I/O Automation</span>
+            </div>
+        </section>
+
+        <!-- 슬라이드 8: Full Stack (Spring Boot / S3) -->
+        <section id="slide-8" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-purple-400 rounded-full"></span>
+                    PROJECT 04. 웹 미디어 강의 스트리밍 플랫폼 (풀스택 웹 개발)
+                </h2>
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Full Stack Web (Java 기반)</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center overflow-y-auto max-h-[420px] pr-2">
+                <div class="lg:col-span-6 space-y-4">
+                    <span class="bg-purple-500/10 text-purple-400 text-xs px-2.5 py-1 rounded-md border border-purple-500/20 font-semibold">Web Application Architecture</span>
+                    <h3 class="text-2xl font-extrabold text-slate-100">
+                        Spring Security 및 AWS 인프라 기반의<br>학습 동영상 강의 스트리밍 서비스 구현
+                    </h3>
+                    <div class="text-slate-300 text-sm font-light space-y-2 leading-relaxed">
+                        <p>
+                            <span class="text-purple-400 font-semibold">프로젝트 소개:</span> React 프론트엔드와 Spring Boot 백엔드를 결합해 DB 설계, 인가 보안, 결제 모듈, 클라우드 배포까지 웹 서비스 전체 파이프라인을 직접 설계·구현. (Python 프로젝트는 아니지만, 프론트-백엔드 통신·HTTP 요청 처리·웹 서비스 구조에 대한 이해를 보여주는 프로젝트입니다.)
+                        </p>
+                        <p>
+                            <span class="text-slate-300 font-semibold">DB 설계:</span> 회원·강의·결제 트랜잭션 테이블을 정규화해 설계하고, 결제 실패/중복 처리를 고려한 트랜잭션 무결성 확보.
+                        </p>
+                        <p>
+                            <span class="text-cyan-400 font-semibold">Spring Security 권한 제어:</span> 역할(Role) 기반 인가를 통한 강의 접근 통제(학생, 강사, 관리자 세션 구분) 설계를 정밀하게 세팅.
+                        </p>
+                        <p>
+                            <span class="text-emerald-400 font-semibold">KakaoPay API 결제 파이프라인 연동:</span> 결제 준비-승인 API 흐름을 직접 연동해 사용자 강의 결제 트랜잭션을 정상 생성하고, 결제 상태를 DB에 안전하게 적재하는 파이프라인 구현.
+                        </p>
+                        <p>
+                            <span class="text-amber-400 font-semibold">AWS S3 동영상 스토리지 적재:</span> 대용량 미디어 데이터를 저장소(S3)에 스트리밍 최적화하여 올리고, AWS EC2 및 RDS 클라우드 통합 배포 성공.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-4">
+                    <!-- 아키텍처 카드 -->
+                    <div class="bg-slate-900 rounded-xl p-5 border border-white/10 space-y-4">
+                        <div class="text-xs font-bold text-slate-300">Platform Infrastructure Architecture</div>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-slate-400 flex items-center"><i data-lucide="lock" class="w-4 h-4 mr-1 text-cyan-400"></i> Authentication</span>
+                                <span class="text-cyan-400 font-mono">Spring Security (RBAC 인가 보증)</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-slate-400 flex items-center"><i data-lucide="credit-card" class="w-4 h-4 mr-1 text-emerald-400"></i> Payment Module</span>
+                                <span class="text-emerald-400 font-mono">KakaoPay API Transaction</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                                <span class="text-slate-400 flex items-center"><i data-lucide="cloud" class="w-4 h-4 mr-1 text-purple-400"></i> Cloud Hosting</span>
+                                <span class="text-purple-400 font-mono">AWS EC2, AWS S3 Video Resource</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-1">
+                                <span class="text-slate-400 flex items-center"><i data-lucide="database" class="w-4 h-4 mr-1 text-amber-400"></i> Relational Storage</span>
+                                <span class="text-amber-400 font-mono">AWS RDS (MySQL)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-slate-500 pt-4 border-t border-white/5">
+                <span>애플리케이션 보안과 인프라 배포에 대한 전방위적 통합 지식 입증</span>
+                <span>Spring Boot, Spring Security, AWS S3/EC2, KakaoPay API</span>
+            </div>
+        </section>
+
+        <!-- 슬라이드 6: 기타 프로젝트 (시계열/컴퓨터비전/풀스택 압축) -->
+        <section id="slide-6" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-slate-400 rounded-full"></span>
+                    그 외 프로젝트. 웹 구조 & 데이터 응용 경험
+                </h2>
+                <span class="text-xs text-slate-500 uppercase tracking-wider">Additional Projects</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-auto overflow-y-auto max-h-[420px] pr-2 py-2">
+                <!-- 시계열 분석 -->
+                <div class="bg-slate-900/70 p-5 rounded-xl border border-white/5 space-y-3">
+                    <span class="bg-cyan-500/10 text-cyan-400 text-xs px-2.5 py-1 rounded-md border border-cyan-500/20 font-semibold">Predictive Modeling</span>
+                    <h4 class="font-bold text-sm text-slate-100">시계열 분석 & Feature Engineering</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        전력 사용량 시계열 데이터에서 다중공선성을 제거하고 '일주일 전 동 시간대 사용량' Lag Feature를 발굴, Random Forest 등과 비교해 최적 모델을 채택했습니다.
+                    </p>
+                    <span class="text-[10px] text-slate-500">Python, MATLAB, Time Series</span>
+                </div>
+
+                <!-- 컴퓨터 비전 -->
+                <div class="bg-slate-900/70 p-5 rounded-xl border border-white/5 space-y-3">
+                    <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-md border border-emerald-500/20 font-semibold">Computer Vision</span>
+                    <h4 class="font-bold text-sm text-slate-100">실시간 가상 키보드 제스처 인식</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        웹캠으로 캡처한 손가락 좌표를 KNN 분류 모델로 학습시켜, 별도 하드웨어 없이 클릭 이벤트를 인식하는 인터페이스를 구현했습니다.
+                    </p>
+                    <span class="text-[10px] text-slate-500">Python, OpenCV, KNN</span>
+                </div>
+
+                <!-- ROWID/Unpivot 튜닝 -->
+                <div class="bg-slate-900/70 p-5 rounded-xl border border-white/5 space-y-3">
+                    <span class="bg-purple-500/10 text-purple-400 text-xs px-2.5 py-1 rounded-md border border-purple-500/20 font-semibold">Performance Tuning</span>
+                    <h4 class="font-bold text-sm text-slate-100">검증 배치 성능 개선</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        속도 저하 문제를 Unpivot 압축 프로그램(Python 개발)으로 해결하고, ORA-01555 오류는 ROWID 범위 분할·물리 정렬로 랜덤 I/O를 줄여 해결했습니다.
+                    </p>
+                    <span class="text-[10px] text-slate-500">Python, Oracle, SQL 튜닝</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-slate-500 pt-4 border-t border-white/5">
+                <span>튜닝, 예측 모델링 등 폭넓게 다뤄본 응용 경험</span>
+                <span>Python, React, Spring Boot, Machine Learning</span>
+            </div>
+        </section>
+
+        <!-- 슬라이드 9: Outro (마무리) -->
+        <section id="slide-9" class="slide slide-inactive-right absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl">
+            <div class="flex justify-between items-start">
+                <div class="bg-cyan-500/10 text-cyan-400 text-xs font-semibold px-3 py-1.5 rounded-full border border-cyan-500/20">
+                    CONTACT ME
+                </div>
+                <div class="text-right text-slate-400 text-xs">
+                    <p>Python Web Developer</p>
+                </div>
+            </div>
+
+            <div class="my-auto space-y-6 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-2">
+                    <i data-lucide="terminal" class="w-10 h-10 animate-bounce"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                    구조를 읽어내고, 직접 만들어온<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-emerald-400 to-indigo-400">
+                        Python 웹 개발자입니다.
+                    </span>
+                </h1>
+                <p class="text-slate-400 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                    문서 없는 시스템의 구조를 역공학으로 분석하고 Python으로 자동화해온 경험과, 웹 서비스 설계·개발 경험을 함께 살려 빠르게 기여하는 개발자가 되겠습니다.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-6 border-t border-white/5 text-xs text-slate-400 gap-4">
+                <div>
+                    <p class="text-slate-300 font-bold">이채원 (Lee Chae-won)</p>
+                </div>
+                <div class="flex space-x-6">
+                    <span class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-1 text-cyan-400"></i> lee00cw@gmail.com</span>
+                    <span class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-1 text-emerald-400"></i> 010-2487-3315</span>
+                </div>
+            </div>
+        </section>
+
+    
+
+    
+
+    
+
+    
+
+    </main>
+
+    <!-- 하단 슬라이드 네비게이션 컨트롤 -->
+    <footer class="w-full px-6 py-4 flex justify-between items-center z-50 glass-card border-t border-white/5">
+        <div class="flex items-center space-x-4">
+            <button id="prev-btn" class="p-2 bg-slate-850 hover:bg-slate-800 rounded-lg border border-white/5 transition-colors text-slate-300 disabled:opacity-30 disabled:pointer-events-none">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div class="hidden sm:flex items-center space-x-1.5" id="progress-dots">
+                <!-- Dots will be injected by JS -->
+            </div>
+            <button id="next-btn" class="p-2 bg-slate-850 hover:bg-slate-800 rounded-lg border border-white/5 transition-colors text-slate-300 disabled:opacity-30 disabled:pointer-events-none">
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="flex items-center space-x-3 text-xs text-slate-400">
+            <kbd class="px-2 py-1 bg-slate-800 rounded border border-white/10 hidden md:inline">← / → 키로 이동</kbd>
+            <button id="autoplay-btn" class="flex items-center space-x-1 px-3 py-1.5 bg-slate-850 hover:bg-slate-800 rounded-lg border border-white/5 transition-colors">
+                <i data-lucide="play" class="w-3.5 h-3.5 text-cyan-400" id="autoplay-icon"></i>
+                <span id="autoplay-text">자동재생</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- JS 제어 로직 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lucide 아이콘 초기화
+            lucide.createIcons();
+
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            let currentSlideIdx = 0;
+            let autoplayInterval = null;
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const badge = document.getElementById('current-slide-badge');
+            const progressDotsContainer = document.getElementById('progress-dots');
+            const dropdownBtn = document.getElementById('dropdown-btn');
+            const slideDropdown = document.getElementById('slide-dropdown');
+            const autoplayBtn = document.getElementById('autoplay-btn');
+            const autoplayIcon = document.getElementById('autoplay-icon');
+            const autoplayText = document.getElementById('autoplay-text');
+
+            // 1. 슬라이드 미니 목록 드롭다운 데이터 주입
+            slides.forEach((slide, index) => {
+                const titleElement = slide.querySelector('h2, h1');
+                const titleText = titleElement ? titleElement.innerText.replace(/\n/g, ' ').substring(0, 30) : `Slide ${index + 1}`;
+                
+                const item = document.createElement('button');
+                item.className = `w-full text-left text-xs px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors flex items-center space-x-2 ${index === currentSlideIdx ? 'text-cyan-400 bg-slate-800/50' : 'text-slate-300'}`;
+                item.innerHTML = `
+                    <span class="font-mono text-[10px] text-slate-500">${String(index + 1).padStart(2, '0')}</span>
+                    <span class="truncate">${titleText}</span>
+                `;
+                item.addEventListener('click', () => {
+                    goToSlide(index);
+                    slideDropdown.classList.add('hidden');
+                });
+                slideDropdown.appendChild(item);
+
+                // 2. 하단 진행 도트 바(Dot bar) 추가
+                const dot = document.createElement('button');
+                dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${index === currentSlideIdx ? 'bg-cyan-400 w-6' : 'bg-slate-700 hover:bg-slate-600'}`;
+                dot.addEventListener('click', () => goToSlide(index));
+                progressDotsContainer.appendChild(dot);
+            });
+
+            // 드롭다운 보기/가리기 토글
+            dropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                slideDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', () => {
+                slideDropdown.classList.add('hidden');
+            });
+
+            // 3. 슬라이드 상태 제어 함수
+            function goToSlide(targetIdx) {
+                if (targetIdx < 0 || targetIdx >= totalSlides) return;
+
+                slides.forEach((slide, index) => {
+                    slide.className = 'slide absolute w-full max-w-6xl h-full max-h-[640px] flex flex-col justify-between p-8 md:p-12 glass-card rounded-2xl';
+                    if (index === targetIdx) {
+                        slide.classList.add('slide-active');
+                    } else if (index < targetIdx) {
+                        slide.classList.add('slide-inactive-left');
+                    } else {
+                        slide.classList.add('slide-inactive-right');
+                    }
+                });
+
+                currentSlideIdx = targetIdx;
+                updateControls();
+            }
+
+            // UI 컨트롤 상태 동기화
+            function updateControls() {
+                // 버튼 비활성화 분기
+                prevBtn.disabled = currentSlideIdx === 0;
+                nextBtn.disabled = currentSlideIdx === totalSlides - 1;
+
+                // 인디케이터 배지 교체
+                badge.innerText = `${String(currentSlideIdx + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+
+                // 도트 강조 갱신
+                const dots = progressDotsContainer.querySelectorAll('button');
+                dots.forEach((dot, index) => {
+                    if (index === currentSlideIdx) {
+                        dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-cyan-400 w-6';
+                    } else {
+                        dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-slate-700 hover:bg-slate-600';
+                    }
+                });
+
+                // 드롭다운 강조 동기화
+                const dropdownItems = slideDropdown.querySelectorAll('button');
+                dropdownItems.forEach((item, index) => {
+                    if (index === currentSlideIdx) {
+                        item.classList.add('text-cyan-400', 'bg-slate-800/50');
+                        item.classList.remove('text-slate-300');
+                    } else {
+                        item.classList.remove('text-cyan-400', 'bg-slate-800/50');
+                        item.classList.add('text-slate-300');
+                    }
+                });
+            }
+
+            // 이벤트 바인딩
+            prevBtn.addEventListener('click', () => {
+                stopAutoplay();
+                goToSlide(currentSlideIdx - 1);
+            });
+            nextBtn.addEventListener('click', () => {
+                stopAutoplay();
+                goToSlide(currentSlideIdx + 1);
+            });
+
+            // 키보드 방향키 바인딩
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    stopAutoplay();
+                    goToSlide(currentSlideIdx - 1);
+                } else if (e.key === 'ArrowRight') {
+                    stopAutoplay();
+                    goToSlide(currentSlideIdx + 1);
+                }
+            });
+
+            // 자동 재생(Autoplay) 토글
+            function startAutoplay() {
+                autoplayInterval = setInterval(() => {
+                    if (currentSlideIdx < totalSlides - 1) {
+                        goToSlide(currentSlideIdx + 1);
+                    } else {
+                        goToSlide(0); // 처음으로 롤백
+                    }
+                }, 5000); // 5초 주기 변경
+                autoplayIcon.setAttribute('data-lucide', 'pause');
+                autoplayIcon.classList.remove('text-cyan-400');
+                autoplayIcon.classList.add('text-emerald-400');
+                autoplayText.innerText = '일시정지';
+                lucide.createIcons();
+            }
+
+            function stopAutoplay() {
+                if (autoplayInterval) {
+                    clearInterval(autoplayInterval);
+                    autoplayInterval = null;
+                    autoplayIcon.setAttribute('data-lucide', 'play');
+                    autoplayIcon.classList.remove('text-emerald-400');
+                    autoplayIcon.classList.add('text-cyan-400');
+                    autoplayText.innerText = '자동재생';
+                    lucide.createIcons();
+                }
+            }
+
+            autoplayBtn.addEventListener('click', () => {
+                if (autoplayInterval) {
+                    stopAutoplay();
+                } else {
+                    startAutoplay();
+                }
+            });
+
+            // 모바일 화면용 터치 스와이프 제스처 지원
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const slideArea = document.querySelector('main');
+            
+            slideArea.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            slideArea.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    // 왼쪽으로 스와이프 => 다음 슬라이드
+                    stopAutoplay();
+                    goToSlide(currentSlideIdx + 1);
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    // 오른쪽으로 스와이프 => 이전 슬라이드
+                    stopAutoplay();
+                    goToSlide(currentSlideIdx - 1);
+                }
+            }
+
+            // 초기 로드 뷰 맞추기
+            goToSlide(0);
+        });
+    </script>
+</body>
+</html>
